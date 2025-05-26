@@ -39,6 +39,44 @@ class AdministrasiController extends Controller
         ]);
     }
 
+    /**
+     * Menampilkan form tambah administrasi
+     */
+    public function create()
+    {
+        $list_pasien = Pasien::all();
+        $list_poli = Poli::all();
+
+        return view('administrasi_create', [
+    'list_pasien' => $list_pasien,
+    'list_poli'   => $list_poli
+]);
+
+    }
+
+    public function edit($id)
+{
+    $administrasi = Administrasi::findOrFail($id);
+    $list_pasien = Pasien::all();
+    $list_poli = Poli::all();
+
+    return view('administrasi_edit', [
+        'administrasi' => $administrasi,
+        'list_pasien'  => $list_pasien,
+        'list_poli'    => $list_poli
+    ]);
+}
+
+public function destroy($id)
+{
+    $data = Administrasi::findOrFail($id);
+    $data->delete();
+
+    return redirect()->route('administrasi.index')->with('message', 'Data berhasil dihapus');
+}
+    /**
+     * Menyimpan administrasi baru
+     */
     public function store(Request $request)
     {
         $validasiData = $request->validate([
